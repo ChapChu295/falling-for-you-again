@@ -13,7 +13,7 @@
 }
 
 body{
-    font-family: Pretendard, sans-serif;
+    font-family:Pretendard,sans-serif;
     background:#0f0f14;
     overflow:hidden;
     color:white;
@@ -22,6 +22,7 @@ body{
 .screen{
     width:100%;
     height:100vh;
+
     position:absolute;
     top:0;
     left:0;
@@ -32,6 +33,7 @@ body{
     flex-direction:column;
 
     padding:30px;
+
     transition:0.8s;
 }
 
@@ -75,12 +77,14 @@ p{
 input{
     width:280px;
     padding:15px;
+
     border:none;
     border-radius:16px;
     outline:none;
 
     background:#1d1d2a;
     color:white;
+
     font-size:1rem;
     text-align:center;
 
@@ -89,6 +93,7 @@ input{
 
 button{
     padding:14px 30px;
+
     border:none;
     border-radius:999px;
 
@@ -125,11 +130,14 @@ button:hover{
 .heart{
     position:absolute;
     bottom:-20px;
+
     animation:float linear forwards;
+
     opacity:0.7;
 }
 
 @keyframes float{
+
     from{
         transform:translateY(0);
         opacity:0;
@@ -176,9 +184,15 @@ button:hover{
 
     <div class="message-box">
 
-        <div class="name" id="displayName"></div>
+        <div
+            class="name"
+            id="displayName">
+        </div>
 
-        <div class="message" id="typing"></div>
+        <div
+            class="message"
+            id="typing">
+        </div>
 
     </div>
 
@@ -195,9 +209,12 @@ function startLove(){
         return;
     }
 
-    document.getElementById("displayName").innerText = name;
+    document
+    .getElementById("displayName")
+    .innerText = name;
 
-    const text = `
+    // 1막
+    const part1 = `
 우리는 이미 서로를 사랑하고 있는데도,
 나는 아직도 ${name}형이 새로워.
 
@@ -209,11 +226,14 @@ ${name}형이랑 연락하고,
 ${name}형이랑 웃고,
 ${name}형한테 사랑한다고 듣는 일들이
 이젠 너무 당연해졌는데도...
+`;
 
+    // 2막
+    const part2 = `
 나는 아직도 가끔 벅차.
 
 세상은 매일 시끄럽고 복잡한데
-${name}형는 꼭 내 편인 작은 우주 같아.
+${name}형은 꼭 내 편인 작은 우주 같아.
 
 그리고 있잖아.
 
@@ -232,12 +252,12 @@ ${name}형는 꼭 내 편인 작은 우주 같아.
     .getElementById("love")
     .classList.add("show");
 
-    typeText(text);
-
     createHearts();
+
+    playSequence(part1, part2);
 }
 
-function typeText(text){
+function playSequence(part1, part2){
 
     const typing =
     document.getElementById("typing");
@@ -246,19 +266,45 @@ function typeText(text){
 
     let i = 0;
 
-    function write(){
+    function typePart1(){
 
-        if(i < text.length){
+        if(i < part1.length){
 
-            typing.innerHTML += text.charAt(i);
+            typing.innerHTML += part1.charAt(i);
 
             i++;
 
-            setTimeout(write, 45);
+            setTimeout(typePart1, 45);
+
+        } else {
+
+            // 잠깐 멈춤
+            setTimeout(() => {
+
+                // 로그 리셋
+                typing.innerHTML = "";
+
+                let j = 0;
+
+                function typePart2(){
+
+                    if(j < part2.length){
+
+                        typing.innerHTML += part2.charAt(j);
+
+                        j++;
+
+                        setTimeout(typePart2, 45);
+                    }
+                }
+
+                typePart2();
+
+            }, 1500);
         }
     }
 
-    write();
+    typePart1();
 }
 
 function createHearts(){
