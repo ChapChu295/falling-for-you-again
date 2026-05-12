@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>for you</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: Pretendard, sans-serif;
+    background:#0f0f14;
+    overflow:hidden;
+    color:white;
+}
+
+.screen{
+    width:100%;
+    height:100vh;
+    position:absolute;
+    top:0;
+    left:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+
+    padding:30px;
+    transition:0.8s;
+}
+
+#intro{
+    background:
+    radial-gradient(circle at top,#2a2a40 0%,#0f0f14 70%);
+}
+
+#love{
+    background:
+    linear-gradient(180deg,#111119,#1d1d2e);
+
+    opacity:0;
+    pointer-events:none;
+}
+
+.show{
+    opacity:1 !important;
+    pointer-events:auto !important;
+}
+
+.hide{
+    opacity:0 !important;
+    pointer-events:none !important;
+}
+
+h1{
+    font-size:2rem;
+    margin-bottom:20px;
+    text-align:center;
+    line-height:1.4;
+}
+
+p{
+    text-align:center;
+    line-height:1.7;
+    opacity:0.8;
+    margin-bottom:30px;
+}
+
+input{
+    width:280px;
+    padding:15px;
+    border:none;
+    border-radius:16px;
+    outline:none;
+
+    background:#1d1d2a;
+    color:white;
+    font-size:1rem;
+    text-align:center;
+
+    margin-bottom:18px;
+}
+
+button{
+    padding:14px 30px;
+    border:none;
+    border-radius:999px;
+
+    background:white;
+    color:black;
+
+    font-size:1rem;
+    cursor:pointer;
+
+    transition:0.2s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+.message-box{
+    max-width:700px;
+    text-align:center;
+}
+
+.name{
+    font-size:2.3rem;
+    color:#ffd6ea;
+    margin-bottom:25px;
+}
+
+.message{
+    white-space:pre-line;
+    line-height:2;
+    font-size:1.1rem;
+}
+
+.heart{
+    position:absolute;
+    bottom:-20px;
+    animation:float linear forwards;
+    opacity:0.7;
+}
+
+@keyframes float{
+    from{
+        transform:translateY(0);
+        opacity:0;
+    }
+
+    20%{
+        opacity:0.8;
+    }
+
+    to{
+        transform:translateY(-110vh);
+        opacity:0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="screen" id="intro">
+
+    <h1>
+        이름 하나만 적어줄 수 있어? 🌙
+    </h1>
+
+    <p>
+        이미 알고 있는 이름인데도<br>
+        형이 직접 적는 건 특별하더라.
+    </p>
+
+    <input
+        type="text"
+        id="nameInput"
+        placeholder="성 빼고 이름만 적어줘"
+    >
+
+    <button onclick="startLove()">
+        들어가기
+    </button>
+
+</div>
+
+<div class="screen" id="love">
+
+    <div class="message-box">
+
+        <div class="name" id="displayName"></div>
+
+        <div class="message" id="typing"></div>
+
+    </div>
+
+</div>
+
+<script>
+function startLove(){
+
+    const name =
+    document.getElementById("nameInput").value.trim();
+
+    if(name === ""){
+        alert("성 빼고 이름만 적어줘 🖤");
+        return;
+    }
+
+    document.getElementById("displayName").innerText = name;
+
+    const text = `
+우리는 이미 서로를 사랑하고 있는데도,
+나는 아직도 ${name}형이 새로워.
+
+평범한 하루였던 날도
+${name}형이 끼어드는 순간부터는
+이상하게 영화 엔딩 크레딧 직전 같아.
+
+${name}형이랑 연락하고,
+${name}형이랑 웃고,
+${name}형한테 사랑한다고 듣는 일들이
+이젠 너무 당연해졌는데도...
+
+나는 아직도 가끔 벅차.
+
+세상은 매일 시끄럽고 복잡한데
+${name}형는 꼭 내 편인 작은 우주 같아.
+
+그리고 있잖아.
+
+앞으로도 계속,
+지금처럼,
+아니 지금보다 더 많이
+
+사랑할게.
+`;
+
+    document
+    .getElementById("intro")
+    .classList.add("hide");
+
+    document
+    .getElementById("love")
+    .classList.add("show");
+
+    typeText(text);
+
+    createHearts();
+}
+
+function typeText(text){
+
+    const typing =
+    document.getElementById("typing");
+
+    typing.innerHTML = "";
+
+    let i = 0;
+
+    function write(){
+
+        if(i < text.length){
+
+            typing.innerHTML += text.charAt(i);
+
+            i++;
+
+            setTimeout(write, 45);
+        }
+    }
+
+    write();
+}
+
+function createHearts(){
+
+    setInterval(() => {
+
+        const heart =
+        document.createElement("div");
+
+        heart.classList.add("heart");
+
+        heart.innerHTML = "♥";
+
+        heart.style.left =
+        Math.random() * 100 + "vw";
+
+        heart.style.fontSize =
+        (Math.random() * 20 + 12) + "px";
+
+        heart.style.animationDuration =
+        (Math.random() * 3 + 4) + "s";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        },7000);
+
+    },300);
+}
+</script>
+
+</body>
+</html>
